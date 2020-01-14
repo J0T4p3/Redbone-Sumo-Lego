@@ -1,0 +1,16 @@
+Program.Delay(5000)
+While "True"
+  If Sensor.ReadPercent(4) > 60 Then 'Sensor de luminosidade'
+    Motor.StartSteer("AB", 70, -70)
+  Else
+    If Sensor.ReadPercent(1) < 30 Then 'Sensor de proximidade'
+      Motor.StartSteer("AB", 80, 0)
+    Else
+      Motor.StartSteer("AB", 60, -60)
+    EndIf
+  EndIf
+EndWhile
+  
+  
+  
+ 
