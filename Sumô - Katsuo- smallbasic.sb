@@ -60,7 +60,7 @@ While "True"
     cor = 0
 
 EndIf
-EndWhile
+EndWhile 
 
 'Precisamos testar esse negócio do "i" aí, das cores e essa última parte. Assistir vídeos para
 'formular estratégias é a nossa prioridade.
