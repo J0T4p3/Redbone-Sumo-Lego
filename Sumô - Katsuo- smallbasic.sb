@@ -1,16 +1,66 @@
-Program.Delay(5000)
+'Progamação utilizada na competição Ironcup 2020, sendo o Katsuo o seu portador
+
+'Todos os robôs deve esperar por 5 segundos antes de começar a batalha. 
+'Recomenda-se testar este valor, visto que o programa demora um 
+'pouquinho para rodar
+
+'Variáveis iniciadas (como recomenda as boas práticas)
+cor = 0
+distancia = 0
+i = 0
+
+'tempo de espera (em milisegundos)
+Program.Delay(4993)
+
+'E aqui o nosso void Loop()
 While "True"
-  If Sensor.ReadPercent(4) > 60 Then 'Sensor de luminosidade'
-    Motor.StartSteer("AB", 70, -70)
-  Else
-    If Sensor.ReadPercent(1) < 30 Then 'Sensor de proximidade'
-      Motor.StartSteer("AB", 80, 0)
-    Else
-      Motor.StartSteer("AB", 60, -60)
+
+  Sensor.SetMode(4,0) 'Defina o sensor tal na porta 4 para o modo 0 (leitura de distância em cm)'
+  Sensor.SetMode(3,2) ' Defina o sensor tal na porta 3 para o modo 2 (associa valores as cores))
+
+
+  distancia = Sensor.ReadPercent(4) 'leitura do sensor da porta 4, em cm
+  cor = Sensor.ReadRawValue(3,0) 'leitura do sensor na porta 3 no modo 0, em que a distância é medida em mm
+  
+  ' "cor" é uma variável que recebe a leitura do sensor de luminosidade a cada nova iteração
+  'do nosso loop. O modo em que o sensor se encontra, o de detecção de cor, associa a cor preta
+  '(ou a auxência de cor) ao valor 1, como diz na documentação. Caso o sensor detecte a cor
+  'preta, retornará o número 1.
+  
+  'Se estiver em piso preto, irá procurar o oponente. Caso o oponente esteja na frente, o robô
+  'acelera com tudo. Caso não, o robô irá rodar no próprio eixo até achar algo.
+  If cor = 1 Then
+    If distancia <= 70 Then
+      Motor.Start("AB", -100)
+      Motor.Start("CD", 100)
+      cor = 0 'não sei pq tem isso aqui kkk, acho que ele não sai do if enquanto cor for
+              'igual a 1, sei lá rs
+
+    ElseIf distancia > 70 Then
+      Motor.Start("C", 100)
+      Motor.Start("D",-100)
+      Motor.Start("B",-100)
+      Motor.Start("A",100)
+      cor = 0
+      EndIf
     EndIf
-  EndIf
+    
+ 'Agora, se o valor de leitura for 6 (branco), então o robô dará a ré em velocidade máxima
+ If cor = 6 Then
+    Motor.Start("AB", 100)
+    Motor.Start("CD", -100)
+    Program.Delay(1000)
+    
+    'Isso não me remete a nada rs. Vale testar.
+    Motor.Start("C", 100)
+    Motor.Start("D",-100)
+    Motor.Start("B",-100)
+    Motor.Start("A",100)
+    Program.Delay(1000)
+    cor = 0
+
+EndIf
 EndWhile
-  
-  
-  
- 
+
+'Precisamos testar esse negócio do "i" aí, das cores e essa última parte. Assistir vídeos para
+'formular estratégias é a nossa prioridade.
